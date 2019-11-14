@@ -1,0 +1,8 @@
+{
+	"name": "macro_empire",
+	"version": "0.0.22",
+	"label": "Macro Empire",
+	"description": "Streamlined empire building experience for 0 A.D.",
+	"dependencies": ["0ad>=0.0.22"],
+	"type": "Overhaul Mod"
+}

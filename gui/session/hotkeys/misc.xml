@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<object hotkey="cancel">
+		<action on="Press">closeOpenDialogsOrShowExit();</action>
+	</object>
+
+	<object hotkey="chat">
+		<action on="Press">openChat(false);</action>
+	</object>
+
+	<object hotkey="teamchat">
+		<action on="Press">openChat(true);</action>
+	</object>
+
+	<object hotkey="menu.toggle">
+		<action on="Press">toggleMenu();</action>
+	</object>
+
+	<object hotkey="silhouettes">
+		<action on="Press">
+			var newSetting = !Engine.Renderer_GetSilhouettesEnabled();
+			Engine.Renderer_SetSilhouettesEnabled(newSetting);
+		</action>
+	</object>
+
+	<object hotkey="showsky">
+		<action on="Press">
+			var newSetting = !Engine.Renderer_GetShowSkyEnabled();
+			Engine.Renderer_SetShowSkyEnabled(newSetting);
+		</action>
+	</object>
+
+	<object hotkey="pause">
+		<action on="Press">togglePause();</action>
+	</object>
+
+	<object hotkey="quicksave">
+		<action on="Press">Engine.QuickSave();</action>
+	</object>
+
+	<object hotkey="quickload">
+		<action on="Press">Engine.QuickLoad();</action>
+	</object>
+
+	<object hotkey="session.kill">
+		<action on="Press">
+			let ent = g_Selection.getFirstSelected();
+			if (ent)
+				performCommand(GetExtendedEntityState(ent), "delete");
+		</action>
+	</object>
+
+	<object hotkey="session.unload">
+		<action on="Press">unloadAll();</action>
+	</object>
+
+	<object hotkey="session.stop">
+		<action on="Press">stopUnits(g_Selection.toList());</action>
+	</object>
+
+	<object hotkey="session.backtowork">
+		<action on="Press">backToWork();</action>
+	</object>
+
+	<!-- Find idle warrior - TODO: Potentially move this to own UI button? -->
+	<object hotkey="selection.idlewarrior">
+		<action on="Press">findIdleUnit(g_MilitaryTypes);</action>
+	</object>
+
+	<object hotkey="selection.cancel">
+		<action on="Press">clearSelection();</action>
+	</object>
+
+</object>
