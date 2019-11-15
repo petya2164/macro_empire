@@ -16,15 +16,12 @@ function performGroup(action, groupId)
 			g_Selection.addList(toSelect);
 			//warn("selectGroup: " + groupId + " / size " + toSelect.length);
 
-			if (toSelect.length)
+			if (action == "snap" && toSelect.length)
 			{
 				let entState = GetEntityState(toSelect[0]);
 				let position = entState.position;
-				if (position)
-				{
-					if (action == "snap" && entState.visibility != "hidden")
-						Engine.CameraMoveTo(position.x, position.z);
-				}
+				if (position && entState.visibility != "hidden")
+					Engine.CameraMoveTo(position.x, position.z);
 			}
 			break;
 		case "save":
@@ -68,6 +65,9 @@ function performGroup(action, groupId)
 
 function doAction(action, ev)
 {
+	if (!controlsPlayer(g_ViewedPlayer))
+		return false;
+
 	var selection = g_Selection.toList();
 
 	// If shift is down, add the order to the unit's order queue instead
@@ -75,7 +75,7 @@ function doAction(action, ev)
 	var queued = Engine.HotkeyIsPressed("session.queue");
 	var target = Engine.GetTerrainAtScreenPoint(ev.x, ev.y);
 
-	if (unitActions[action.type] && unitActions[action.type].execute)
+	if (g_UnitActions[action.type] && g_UnitActions[action.type].execute)
 	{
 		// All actions should be executed on a per-group basis, so that
 		// the groups can move and attack together
@@ -83,7 +83,7 @@ function doAction(action, ev)
 
 		for (let cluster of clusters)
 		{
-			unitActions[action.type].execute(target, action, cluster, queued);
+			g_UnitActions[action.type].execute(target, action, cluster, queued);
 		}
 		return true;
 	}
@@ -91,83 +91,14 @@ function doAction(action, ev)
 	return false;
 }
 
-/**
- * Returns the number of units that will be present in a batch if the user clicks
- * the training button with shift down
- */
-function getTrainingBatchStatus(playerState, trainEntType, selection)
-{
-	let batchIncrementSize = +Engine.ConfigDB_GetValue("user", "gui.session.batchtrainingsize");
-	var trainingGroups = [];
-	if (selection)
-		trainingGroups = getBatchTrainingGroups(selection, trainEntType);
-	var nextBatchTrainingCount = 0;
-	var currentBatchTrainingCount = 0;
-
-	var limits;
-	if (inputState == INPUT_BATCHTRAINING && batchTrainingType == trainEntType)
-	{
-		nextBatchTrainingCount = batchTrainingCount;
-		currentBatchTrainingCount = batchTrainingCount;
-		limits = {
-			"canBeAddedCount": batchTrainingEntityAllowedCount
-		};
-	}
-	else
-		limits = getEntityLimitAndCount(playerState, trainEntType);
-
-	// We need to calculate count after the next increment if it's possible
-	if (limits.canBeAddedCount == undefined ||
-		limits.canBeAddedCount > nextBatchTrainingCount * trainingGroups.length)
-		nextBatchTrainingCount += batchIncrementSize;
-
-	// If training limits don't allow us to train batchTrainingCount in each appropriate building
-	// train as many full batches as we can and remainer in one more building.
-	var buildingsCountToTrainFullBatch = trainingGroups.length;
-	var remainderToTrain = 0;
-	if (limits.canBeAddedCount !== undefined &&
-	    limits.canBeAddedCount < nextBatchTrainingCount * trainingGroups.length)
-	{
-		buildingsCountToTrainFullBatch = Math.floor(limits.canBeAddedCount / nextBatchTrainingCount);
-		remainderToTrain = limits.canBeAddedCount % nextBatchTrainingCount;
-	}
-
-	return [buildingsCountToTrainFullBatch, nextBatchTrainingCount, remainderToTrain, currentBatchTrainingCount];
-}
-
-function getBatchTrainingGroups(selection, trainEntType)
-{
-	if (selection.length)
-	{
-		var st = GetEntityState(selection[0]);
-		//warn("getBatchTrainingGroups: selection[0] " + st.template);
-		//warn("  someUnitAI: " + someUnitAI(selection));
-	}
-
-	if (someUnitAI(selection))
-	{
-		var clusters = g_Groups.clusterEntitiesByGroup(selection, true);
-		//warn("  clusters: " + clusters.length);
-		if (clusters.length)
-			return clusters;
-	}
-
-	return selection.filter(entity => {
-		var state = GetEntityState(entity);
-		var canTrain = state && state.production && state.production.entities.length &&
-			state.production.entities.indexOf(trainEntType) != -1;
-		return canTrain;
-	});
-}
-
 function getBuildingsWhichCanTrainEntity(selection, trainEntType)
 {
 	if (selection.length)
 	{
-		var st = GetEntityState(selection[0]);
+		//var st = GetEntityState(selection[0]);
 		//warn("getBuildingsWhichCanTrainEntity: selection[0] " + st.template);
 	}
-
+	/*
 	if (someUnitAI(selection))
 	{
 		var clusters = g_Groups.clusterEntitiesByGroup(selection, true);
@@ -191,10 +122,11 @@ function getBuildingsWhichCanTrainEntity(selection, trainEntType)
 				return buildings;
 		}
 	}
+	*/
 
 	return selection.filter(entity => {
-		var state = GetEntityState(entity);
-		var canTrain = state && state.production && state.production.entities.length &&
+		let state = GetEntityState(entity);
+		let canTrain = state && state.production && state.production.entities.length &&
 			state.production.entities.indexOf(trainEntType) != -1;
 		return canTrain;
 	});

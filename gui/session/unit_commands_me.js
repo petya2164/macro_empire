@@ -7,19 +7,18 @@ function getAllTrainableEntities(selection)
 		//warn("getAllTrainableEntities: entity[0] " + st.template);
 	}
 
-	var trainableEnts = [];
-	var state;
+	let trainableEnts = [];
 	// Get all buildable and trainable entities
 	for (let ent of selection)
 	{
-		state = GetEntityState(ent);
+		let state = GetEntityState(ent);
 		if (!state)
 			continue;
 
 		if (state.unitAI && state.player > 0)
 		{
 			//warn("got a unit: " + state.template);
-			return getAllUnitsForCiv(g_Players[state.player].civ);
+			//return getAllUnitsForCiv(g_Players[state.player].civ);
 		}
 
 		if (state.production && state.production.entities.length)
@@ -36,23 +35,23 @@ function getAllBuildableEntities(selection)
 {
 	if (selection.length)
 	{
-		var st = GetEntityState(selection[0]);
+		//var st = GetEntityState(selection[0]);
 		//warn("getAllBuildableEntities: entity[0] " + st.template);
 	}
 
 	return Engine.GuiInterfaceCall("GetAllBuildableEntities", { "entities": selection });
 }
 
-var g_ParsedData = {
-	"units": {},
-	"structures": {},
-	"techs": {},
-	"phases": {}
-};
+//var g_ParsedData = {
+//	"units": {},
+//	"structures": {},
+//	"techs": {},
+//	"phases": {}
+//};
 
-var g_Lists = {};
-var g_AuraData = {};
-var g_RawTemplateData = {};
+//var g_Lists = {};
+//var g_AuraData = {};
+//var g_RawTemplateData = {};
 
 function getAllUnitsForCiv(civCode)
 {

@@ -18,7 +18,6 @@
   <Minimap disable=""/>
   <ResourceGatherer disable=""/>
   <UnitAI>
-    <AlertReactiveLevel>99</AlertReactiveLevel>
     <CanGuard>false</CanGuard>
     <CanPatrol>false</CanPatrol>
     <RoamDistance>8.0</RoamDistance>
@@ -29,9 +28,9 @@
     <FeedTimeMax>60000</FeedTimeMax>
   </UnitAI>
   <UnitMotion>
-    <WalkSpeed>6.5</WalkSpeed>
+    <WalkSpeed op="mul">0.7</WalkSpeed>
     <Run>
-      <Speed>15.0</Speed>
+      <Speed op="mul">0.7</Speed>
     </Run>
   </UnitMotion>
   <Visibility>
@@ -40,7 +39,4 @@
   <Vision>
     <Range>0</Range>
   </Vision>
-  <VisualActor>
-    <SilhouetteDisplay>false</SilhouetteDisplay>
-  </VisualActor>
 </Entity>

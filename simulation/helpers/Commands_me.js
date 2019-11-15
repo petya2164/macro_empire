@@ -65,13 +65,14 @@ function GetFormationUnitAIs(ents, player, formationTemplate)
 		// TODO: We only check if the formation is usable by some units
 		// if we move them to it. We should check if we can use formations
 		// for the other cases.
-		var nullFormation = (formationTemplate || cmpUnitAI.GetLastFormationTemplate()) == "formations/null";
-		if (!nullFormation && cmpIdentity && cmpIdentity.CanUseFormation(formationTemplate || "formations/null"))
+		var nullFormation = (formationTemplate || cmpUnitAI.GetFormationTemplate()) == "special/formations/null";
+		if (!nullFormation && cmpIdentity && cmpIdentity.CanUseFormation(formationTemplate || "special/formations/null"))
 			formedEnts.push(ent);
 		else
 		{
 			if (nullFormation)
-				cmpUnitAI.SetLastFormationTemplate("formations/null");
+				RemoveFromFormation([ent]);
+
 			nonformedUnitAIs.push(cmpUnitAI);
 		}
 	}
@@ -109,17 +110,6 @@ function GetFormationUnitAIs(ents, player, formationTemplate)
 	{
 		// We need to give the selected units a new formation controller
 
-		// Remove selected units from their current formation
-		for (var fid in formation.members)
-		{
-			var cmpFormation = Engine.QueryInterface(+fid, IID_Formation);
-			if (cmpFormation)
-			{
-				warn("units removed from formation: " + formation.members[fid].length);
-				cmpFormation.RemoveMembers(formation.members[fid]);
-			}
-		}
-
 		// TODO replace the fixed 60 with something sensible, based on vision range f.e.
 		var formationSeparation = 60;
 		var clusters = ClusterEntities(formation.entities, formationSeparation);
@@ -128,14 +118,14 @@ function GetFormationUnitAIs(ents, player, formationTemplate)
 		{
 			if (!formationTemplate || !CanMoveEntsIntoFormation(cluster, formationTemplate))
 			{
-				// get the most recently used formation, or default to line closed
+				// Use the last formation template if everyone was using it
 				var lastFormationTemplate = undefined;
 				for (let ent of cluster)
 				{
 					var cmpUnitAI = Engine.QueryInterface(ent, IID_UnitAI);
 					if (cmpUnitAI)
 					{
-						var template = cmpUnitAI.GetLastFormationTemplate();
+						var template = cmpUnitAI.GetFormationTemplate();
 						if (lastFormationTemplate === undefined)
 						{
 							lastFormationTemplate = template;
@@ -150,7 +140,17 @@ function GetFormationUnitAIs(ents, player, formationTemplate)
 				if (lastFormationTemplate && CanMoveEntsIntoFormation(cluster, lastFormationTemplate))
 					formationTemplate = lastFormationTemplate;
 				else
-					formationTemplate = "formations/null";
+					formationTemplate = "special/formations/null";
+			}
+
+			RemoveFromFormation(cluster);
+
+			if (formationTemplate == "special/formations/null")
+			{
+				for (let ent of cluster)
+					nonformedUnitAIs.push(Engine.QueryInterface(ent, IID_UnitAI));
+
+				continue;
 			}
 
 			// Create the new controller

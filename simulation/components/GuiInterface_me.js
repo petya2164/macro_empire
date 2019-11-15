@@ -175,8 +175,8 @@ GuiInterface.prototype.GetAllBuildableEntities = function(player, cmd)
 		if (!cmpIdentity)
 			continue;
 		// Only the CivCentre is allowed to construct other buildings
-		if (cmpIdentity.GetClassesList().indexOf('CivCentre') < 0)
-			continue;
+		//if (cmpIdentity.GetClassesList().indexOf('CivCentre') < 0)
+		//	continue;
 
 		let cmpBuilder = Engine.QueryInterface(ent, IID_Builder);
 		if (!cmpBuilder)

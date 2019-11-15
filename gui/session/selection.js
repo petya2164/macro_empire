@@ -9,25 +9,31 @@ const g_HighlightedAlpha = 0.75;
 function _setHighlight(ents, alpha, selected)
 {
 	if (ents.length)
-		Engine.GuiInterfaceCall("SetSelectionHighlight", { "entities":ents, "alpha":alpha, "selected":selected });
+		Engine.GuiInterfaceCall("SetSelectionHighlight", { "entities": ents, "alpha": alpha, "selected": selected });
 }
 
 function _setStatusBars(ents, enabled)
 {
-	if (ents.length)
-		Engine.GuiInterfaceCall("SetStatusBars", { "entities":ents, "enabled":enabled });
+	if (!ents.length)
+		return;
+	Engine.GuiInterfaceCall("SetStatusBars", {
+		"entities": ents,
+		"enabled": enabled,
+		"showRank": Engine.ConfigDB_GetValue("user", "gui.session.rankabovestatusbar") == "true"
+	});
 }
 
 function _setMotionOverlay(ents, enabled)
 {
 	if (ents.length)
-		Engine.GuiInterfaceCall("SetMotionDebugOverlay", { "entities":ents, "enabled":enabled });
+		Engine.GuiInterfaceCall("SetMotionDebugOverlay", { "entities": ents, "enabled": enabled });
 }
 
 function _playSound(ent)
 {
-	Engine.GuiInterfaceCall("PlaySound", { "name":"select", "entity":ent });
+	Engine.GuiInterfaceCall("PlaySound", { "name": "select", "entity": ent });
 }
+
 
 /**
  * EntityGroups class for managing grouped entities

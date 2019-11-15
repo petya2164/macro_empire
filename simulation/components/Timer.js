@@ -148,3 +148,4 @@ Timer.prototype.OnUpdate = function(msg)
 };
 
 Engine.RegisterSystemComponentType(IID_Timer, "Timer", Timer);
+//Engine.ReRegisterSystemComponentType(IID_Timer, "Timer", Timer);

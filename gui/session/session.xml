@@ -2,21 +2,10 @@
 
 <objects>
 
-<script file="gui/common/color.js"/>
-<script file="gui/common/colorFades.js"/>
-<script file="gui/common/functions_civinfo.js"/>
-<script file="gui/common/functions_global_object.js"/>
-<script file="gui/common/functions_utility.js"/>
-<script file="gui/common/gamedescription.js"/>
-<script file="gui/common/music.js"/>
-<script file="gui/common/network.js"/>
-<script file="gui/common/settings.js"/>
-<script file="gui/common/timer.js"/>
-<script file="gui/common/tooltips.js"/>
-
+<script directory="gui/common/"/>
 <script directory="gui/session/"/>
 
-<object name="sn">
+<object name="session">
 
 	<action on="Tick">
 		onTick();
@@ -72,7 +61,7 @@
 
 	<!-- Pause Overlay -->
 	<object type="button" name="pauseOverlay" size="0 0 100% 100%" tooltip_style="sessionToolTip" hidden="true" z="0">
-		<object size="0 0 100% 100%" type="image" sprite="devCommandsBackground" ghost="true" z="0"/>
+		<object size="0 0 100% 100%" type="image" sprite="sessionOverlayBackground" ghost="true" z="0"/>
 		<object size="50%-128 40%-20 50%+128 40%+20" type="text" style="PauseText" ghost="true" z="0">
 			<translatableAttribute id="caption">Game Paused</translatableAttribute>
 		</object>
