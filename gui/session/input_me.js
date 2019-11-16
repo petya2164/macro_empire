@@ -77,6 +77,7 @@ function doAction(action, ev)
 
 	if (g_UnitActions[action.type] && g_UnitActions[action.type].execute)
 	{
+		// ------------------------- MOD CODE --------------------------
 		// All actions should be executed on a per-group basis, so that
 		// the groups can move and attack together
 		var clusters = g_Groups.clusterEntitiesByGroup(selection);
@@ -86,7 +87,9 @@ function doAction(action, ev)
 			g_UnitActions[action.type].execute(target, action, cluster, queued);
 		}
 		return true;
+		// ------------------------- MOD CODE --------------------------
 	}
+
 	error("Invalid action.type "+action.type);
 	return false;
 }
