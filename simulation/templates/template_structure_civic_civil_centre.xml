@@ -36,6 +36,7 @@
       </RangeOverlay>
     </Ranged>
   </Attack>
+  <!-- MOD CODE -->
   <Builder>
     <Rate>5.0</Rate>
     <Entities datatype="tokens">
@@ -53,6 +54,7 @@
       structures/{civ}_wonder
     </Entities>
   </Builder>
+  <!-- MOD CODE -->
   <BuildingAI>
     <DefaultArrowCount>3</DefaultArrowCount>
     <GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
@@ -92,7 +94,9 @@
     <LoadingRange>1</LoadingRange>
   </GarrisonHolder>
   <Health>
+    <!-- MOD CODE -->
     <Max>4000</Max>
+    <!-- MOD CODE -->
     <SpawnEntityOnDeath>decay|rubble/rubble_stone_6x6</SpawnEntityOnDeath>
   </Health>
   <Identity>

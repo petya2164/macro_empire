@@ -15,7 +15,9 @@
     <Formations disable=""/>
   </Identity>
   <Loot disable=""/>
+  <!-- MOD CODE -->
   <Minimap disable=""/>
+  <!-- MOD CODE -->
   <ResourceGatherer disable=""/>
   <UnitAI>
     <CanGuard>false</CanGuard>

@@ -66,6 +66,7 @@
     <DeleteUponConstruction>false</DeleteUponConstruction>
   </Obstruction>
   <OverlayRenderer/>
+  <!-- MOD CODE -->
   <RallyPoint/>
   <RallyPointRenderer>
     <MarkerTemplate>special/rallypoint</MarkerTemplate>
@@ -77,6 +78,7 @@
     <LineEndCap>round</LineEndCap>
     <LinePassabilityClass>default</LinePassabilityClass>
   </RallyPointRenderer>
+  <!-- MOD CODE -->
   <RangeOverlayManager/>
   <RangeOverlayRenderer/>
   <ResourceGatherer>
